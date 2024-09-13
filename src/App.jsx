@@ -10,12 +10,15 @@ import Completed from './components/Completed'
 import CreateUser from './components/CreateUser'
 
 function App() {
+  console.log("App component started")
   const { user, loading } = useLogin()
-
+  console.log("User:", user, "Loading:", loading)
   if (loading) {
+    console.log("Rendering loading state")
     return <div>Loading...</div>
   }
-
+  
+  console.log("Rendering main content")
   return (
     <Router>
       <>

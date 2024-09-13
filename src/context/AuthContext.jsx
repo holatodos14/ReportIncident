@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { createContext, useState, useEffect } from 'react'
+import { createContext, useState, useEffect, useContext } from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useLocation } from 'wouter'
 import { login as loginService, getMe as getMeService } from '../services/authServices.jsx'
@@ -11,20 +11,19 @@ export const LoginProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [, setLocation] = useLocation()
 
+  const getToken = () => localStorage.getItem('token')
+  const removeToken = () => localStorage.removeItem('token')
+
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = getToken()
     if (token) {
       getMeService()
-        .then(data => {
-          setUser(data)
-        })
+        .then((data) => setUser(data))
         .catch(() => {
-          localStorage.removeItem('token')
+          removeToken()
           setUser(null)
         })
-        .finally(() => {
-          setLoading(false)
-        })
+        .finally(() => setLoading(false))
     } else {
       setLoading(false)
     }
@@ -40,9 +39,8 @@ export const LoginProvider = ({ children }) => {
       console.error('Login error:', error.message)
     },
   })
-
   const logout = () => {
-    localStorage.removeItem('token')
+    removeToken()
     setUser(null)
     setLocation('/login')
   }
@@ -50,13 +48,13 @@ export const LoginProvider = ({ children }) => {
   useQuery({
     queryKey: ['me'],
     queryFn: getMeService,
-    enabled: !!localStorage.getItem('token'),
+    enabled: !!getToken(),
     onSuccess: (data) => {
       setUser(data)
     },
     onError: () => {
       setUser(null)
-      localStorage.removeItem('token')
+      removeToken()
       setLocation('/login')
     },
   })
@@ -75,4 +73,4 @@ export const LoginProvider = ({ children }) => {
   )
 }
 
-export const useLogin = () => React.useContext(AuthContext)
+export const useLogin = () => useContext(AuthContext)
