@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { createIncident } from "../services/incidentsServices"
+import { uploadImage } from "../services/imageServices"
 
 export const Create = () => {
   const [incident, setIncident] = useState({
@@ -7,7 +8,9 @@ export const Create = () => {
     incident_type: "",
     description: "",
     location: "",
+    image: null
   })
+  const [imagePreview, setImagePreview] = useState(null)
 
   const handleChange = (e) => {
     setIncident({
@@ -23,17 +26,37 @@ export const Create = () => {
     })
   }
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    setIncident({
+      ...incident,
+      image: file
+    })
+    setImagePreview(URL.createObjectURL(file))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await createIncident(incident)
+      let imageUrl = null
+      if (incident.image) {
+        const uploadedImage = await uploadImage(incident.image)
+        imageUrl = uploadedImage.filename
+      }
+      
+      await createIncident({
+        ...incident,
+        image: imageUrl
+      })
       alert("Incident created successfully")
       setIncident({
         subject: "",
         incident_type: "",
         description: "",
         location: "",
+        image: null
       })
+      setImagePreview(null)
     } catch (error) {
       console.error("Error creating the incident", error)
       alert("There was an error creating the incident")
@@ -41,7 +64,7 @@ export const Create = () => {
   }
 
   return (
-    <div className="bg-gradient-to-br from-teal-400 to-cyan-500 h-[90vh] bg-cover bg-center flex flex-col justify-center items-center p-8">
+    <div className="bg-gradient-to-br from-teal-400 to-cyan-500 min-h-screen bg-cover bg-center flex flex-col justify-center items-center p-8">
       <h2 className="text-white font-bold text-4xl text-center uppercase mb-8">Create Incident</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg space-y-6">
         <input
@@ -97,6 +120,17 @@ export const Create = () => {
             required
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent"
           />
+          <div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-400 focus:border-transparent"
+            />
+            {imagePreview && (
+              <img src={imagePreview} alt="Preview" className="mt-2 max-w-full h-auto" />
+            )}
+          </div>
         </div>
         <button type="submit" className="bg-teal-600 text-white rounded-lg w-full py-3 hover:bg-teal-700 transition duration-300 ease-in-out">Create Incident</button>
       </form>

@@ -1,5 +1,25 @@
 /* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react'
+import { getImage } from '../services/imageServices'
+
 const Modal = ({ incident, onClose }) => {
+  const [imageUrl, setImageUrl] = useState(null)
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      if (incident.image) {
+        try {
+          const url = await getImage(incident.image)
+          setImageUrl(url)
+        } catch (error) {
+          console.error('Error fetching image:', error)
+        }
+      }
+    }
+
+    fetchImage()
+  }, [incident])
+
   if (!incident) return null
 
   return (
@@ -12,6 +32,12 @@ const Modal = ({ incident, onClose }) => {
           <p><span className="font-semibold text-gray-700">Creation Date:</span> {incident.report_date}</p>
           <p><span className="font-semibold text-gray-700">Incident Type:</span> {incident.incident_type}</p>
           <p><span className="font-semibold text-gray-700">Status:</span> {incident.status}</p>
+          {imageUrl && (
+            <div>
+              <p className="font-semibold text-gray-700">Image:</p>
+              <img src={imageUrl} alt="Incident" className="mt-2 max-w-full h-auto rounded-lg" />
+            </div>
+          )}
         </div>
         <button
           onClick={onClose}
