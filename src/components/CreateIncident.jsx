@@ -2,7 +2,7 @@ import { useState } from "react"
 import { createIncident } from "../services/incidentsServices"
 import { uploadImage } from "../services/imageServices"
 
-export const Create = () => {
+export const CreateIncident = () => {
   const [incident, setIncident] = useState({
     subject: "",
     incident_type: "",

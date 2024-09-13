@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react'
 import { getImage } from '../services/imageServices'
 
-const Modal = ({ incident, onClose }) => {
+const ModalForView = ({ incident, onClose }) => {
   const [imageUrl, setImageUrl] = useState(null)
 
   useEffect(() => {
@@ -50,4 +50,4 @@ const Modal = ({ incident, onClose }) => {
   )
 }
 
-export default Modal
+export default ModalForView

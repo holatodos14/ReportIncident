@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useLogin } from '../context/LoginContext'
+import { useLogin } from '../context/AuthContext'
 import background from '../assets/background.png'
 import { useLocation } from 'wouter'
 
-export const Login = () => {
+export const LoginUser = () => {
   const { login, error } = useLogin()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

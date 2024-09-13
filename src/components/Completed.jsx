@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react'
 import { IncidentsListContext } from '../context/IncidentsContext'
-import { useLogin } from '../context/LoginContext'
-import Modal from './Modal'
+import { useLogin } from '../context/AuthContext.jsx'
+import Modal from './ModalForView.jsx'
 import { deleteIncident } from '../services/incidentsServices.jsx'
 
 const truncateText = (text, maxLength) => {

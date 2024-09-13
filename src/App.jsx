@@ -1,9 +1,9 @@
 import { Router, Route, Switch } from 'wouter'
-import { useLogin } from './context/LoginContext'
-import { Login } from './components/Login'
-import { Nav } from './components/Nav'
-import Home from './components/Home'
-import { Create } from './components/Create'
+import { useLogin } from './context/AuthContext'
+import { LoginUser } from './components/LoginUser'
+import { Navbar } from './components/Navbar'
+import HomePage from './components/HomePage'
+import { CreateIncident } from './components/CreateIncident'
 import { ViewIncidents } from './components/ViewIncidents'
 import Completed from './components/Completed'
 import CreateUser from './components/CreateUser'
@@ -20,10 +20,10 @@ function App() {
       <>
         {user ? (
           <>
-            <Nav />
+            <Navbar />
             <Switch>
-              <Route path="/home" component={Home} />
-              <Route path="/create" component={Create} />
+              <Route path="/home" component={HomePage} />
+              <Route path="/create" component={CreateIncident} />
               <Route path="/viewincidents" component={ViewIncidents} />
               {user.user_type === 'administrator' && (
                 <>
@@ -31,11 +31,11 @@ function App() {
                   <Route path="/createuser" component={CreateUser} />
                 </>
               )}
-              <Route path="/" component={Home} />
+              <Route path="/" component={HomePage} />
             </Switch>
           </>
         ) : (
-          <Route path="/login" component={Login} />
+          <Route path="/login" component={LoginUser} />
         )}
       </>
     </Router>

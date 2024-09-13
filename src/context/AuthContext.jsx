@@ -4,7 +4,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useLocation } from 'wouter'
 import { login as loginService, getMe as getMeService } from '../services/authServices.jsx'
 
-const LoginContext = createContext()
+const AuthContext = createContext()
 
 export const LoginProvider = ({ children }) => {
   const [user, setUser] = useState(null)
@@ -62,7 +62,7 @@ export const LoginProvider = ({ children }) => {
   })
 
   return (
-    <LoginContext.Provider
+    <AuthContext.Provider
       value={{
         user,
         loading,
@@ -71,8 +71,8 @@ export const LoginProvider = ({ children }) => {
       }}
     >
       {children}
-    </LoginContext.Provider>
+    </AuthContext.Provider>
   )
 }
 
-export const useLogin = () => React.useContext(LoginContext)
+export const useLogin = () => React.useContext(AuthContext)
