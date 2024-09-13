@@ -1,9 +1,9 @@
 import { Link } from "wouter"
-import { useLogin } from "../context/LoginContext"
+import { useLogin } from "../context/AuthContext"
 import sopita from "/alertwi.png"
 import signOut from "../assets/sign-out.png"
 
-export const Nav = () => {
+export const Navbar = () => {
   const { user, logout: logoutFunction } = useLogin()
 
   const handleLogout = () => {

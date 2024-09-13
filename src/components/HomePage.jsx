@@ -1,8 +1,8 @@
 import { Link } from "wouter"
 import background from "../assets/background.png"
-import { useLogin } from "../context/LoginContext"
+import { useLogin } from "../context/AuthContext"
 
-const Home = () => {
+const HomePage = () => {
   const { user } = useLogin()
 
   return (
@@ -51,4 +51,4 @@ const Home = () => {
   )
 }
 
-export default Home
+export default HomePage

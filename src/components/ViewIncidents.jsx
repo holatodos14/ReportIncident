@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from "react"
 import { IncidentsListContext } from "../context/IncidentsContext"
-import { useLogin } from "../context/LoginContext"
+import { useLogin } from "../context/AuthContext.jsx"
 import { updateIncident } from "../services/incidentsServices.jsx"
-import Modal from "./Modal"
+import ModalForView from "./ModalForView.jsx"
 
 const truncateText = (text, maxLength) => {
   return text.length > maxLength ? text.slice(0, maxLength) + "..." : text
@@ -142,7 +142,7 @@ export const ViewIncidents = () => {
       </div>
 
       {isModalOpen && (
-        <Modal incident={selectedIncident} onClose={closeModal} />
+        <ModalForView incident={selectedIncident} onClose={closeModal} />
       )}
     </div>
   )

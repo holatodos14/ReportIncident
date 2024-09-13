@@ -4,7 +4,7 @@ import App from "./App.jsx"
 import "./index.css"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { IncidentsList } from "./context/IncidentsContext.jsx"
-import { LoginProvider } from "./context/LoginContext.jsx"
+import { LoginProvider } from "./context/AuthContext.jsx"
 
 const queryClient = new QueryClient()
 
