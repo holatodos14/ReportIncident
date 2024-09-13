@@ -1,0 +1,16 @@
+{
+  "firstName":"david",
+  "lastName":"cambeiro",
+  "email":"cambeiro@example.com",
+  "password": "davidendo14",
+  "userType": "administrator"
+}
+
+{
+  "firstName":"Harold",
+  "lastName":"ElMasPacienteyPro",
+  "email":"Harold@example.com",
+  "password": "harold123",
+  "userType": "resident"
+}
+
