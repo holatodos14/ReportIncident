@@ -1,4 +1,4 @@
-import { Router, Route, Switch } from 'wouter'
+import { Router, Route } from 'wouter'
 import { useLogin } from './context/LoginContext'
 import { Login } from './components/Login'
 import { Nav } from './components/Nav'
@@ -21,7 +21,6 @@ function App() {
         {user ? (
           <>
             <Nav />
-            <Switch>
               <Route path="/home" component={Home} />
               <Route path="/create" component={Create} />
               <Route path="/viewincidents" component={ViewIncidents} />
@@ -32,7 +31,6 @@ function App() {
                 </>
               )}
               <Route path="/" component={Home} />
-            </Switch>
           </>
         ) : (
           <Route path="/login" component={Login} />
