@@ -17,7 +17,6 @@ export const ViewIncidents = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
-
     const intervalId = setInterval(() => {
       refetch()
     }, 1000)
@@ -26,17 +25,26 @@ export const ViewIncidents = () => {
   }, [refetch])
 
   const filteredIncidents = data
-    .filter(
-      (incident) =>
-        incident.status.toLowerCase() === "pending" ||
-        incident.status.toLowerCase() === "in progress"
-    )
-    .filter(
-      (incident) =>
-        incident.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        incident.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        incident.incidentType.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+    .filter((incident) => {
+      
+      if (incident && incident.status) {
+        const status = incident.status.toLowerCase()
+        return status === "pending" || status === "in progress"
+      }
+      return false 
+    })
+    .filter((incident) => {
+      const subject = incident.subject?.toLowerCase() || ""
+      const description = incident.description?.toLowerCase() || ""
+      const incidentType = incident.incidentType?.toLowerCase() || ""
+      const searchTermLower = searchTerm.toLowerCase()
+
+      return (
+        subject.includes(searchTermLower) ||
+        description.includes(searchTermLower) ||
+        incidentType.includes(searchTermLower)
+      )
+    })
 
   const handleCheckboxChange = (id) => {
     setSelectedIncidents((prevSelected) =>
@@ -112,15 +120,15 @@ export const ViewIncidents = () => {
                         />
                       )}
                       <div>
-                        <h2 className="text-xl font-semibold text-gray-800">{truncateText(incident.subject, 30)}</h2>
-                        <p className="text-gray-600">{truncateText(incident.description, 50)}</p>
+                        <h2 className="text-xl font-semibold text-gray-800">{truncateText(incident.subject || "", 30)}</h2>
+                        <p className="text-gray-600">{truncateText(incident.description || "", 50)}</p>
                       </div>
                     </div>
                     <div className="flex items-center space-x-4">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        incident.status.toLowerCase() === 'pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-blue-200 text-blue-800'
+                        (incident.status || "").toLowerCase() === 'pending' ? 'bg-yellow-200 text-yellow-800' : 'bg-blue-200 text-blue-800'
                       }`}>
-                        {incident.status}
+                        {incident.status || "Unknown"}
                       </span>
                       <button
                         onClick={() => handleIncidentClick(incident)}

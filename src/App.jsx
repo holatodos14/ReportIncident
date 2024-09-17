@@ -1,5 +1,5 @@
 
-import { Router, Route } from 'wouter'
+import { Router, Route, Switch, Redirect } from 'wouter'
 import { useLogin } from './context/AuthContext'
 import { LoginUser } from './components/LoginUser'
 import { Navbar } from './components/Navbar'
@@ -10,21 +10,24 @@ import Completed from './components/Completed'
 import CreateUser from './components/CreateUser'
 
 function App() {
-  console.log("App component started")
   const { user, loading } = useLogin()
   console.log("User:", user, "Loading:", loading)
+
   if (loading) {
     console.log("Rendering loading state")
     return <div>Loading...</div>
   }
   
   console.log("Rendering main content")
+  console.log("Current path:", window.location.pathname)
+
   return (
     <Router>
       <>
         {user ? (
           <>
             <Navbar />
+            <Switch>
               <Route path="/home" component={HomePage} />
               <Route path="/create" component={CreateIncident} />
               <Route path="/viewincidents" component={ViewIncidents} />
@@ -34,10 +37,20 @@ function App() {
                   <Route path="/createuser" component={CreateUser} />
                 </>
               )}
-           <Route path="/" component={HomePage} />
+              <Route>
+                {console.log("Redirecting to home")}
+                <Redirect to="/home" />
+              </Route>
+            </Switch>
           </>
         ) : (
-          <Route path="/login" component={LoginUser} />
+          <Switch>
+            <Route path="/login" component={LoginUser} />
+            <Route>
+              {console.log("Redirecting to login")}
+              <Redirect to="/login" />
+            </Route>
+          </Switch>
         )}
       </>
     </Router>
